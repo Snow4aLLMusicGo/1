@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // добавлен импорт библиотеки axios
 import './App.css';
 
 function App() {
   const [article, setArticle] = useState('');
-  const [searchResult, setSearchResult] = useState(null); // добавлено состояние для хранения результатов поиска
+  const [searchResult, setSearchResult] = useState(null); /
 
   const handleArticleChange = (event) => {
     setArticle(event.target.value);
@@ -12,10 +11,11 @@ function App() {
 
   const handleSearchClick = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/search-by-article?article=${article}`);
-      
-      if (response.status === 200) {
-        setSearchResult(response.data); // сохраняем результаты поиска в состояние
+      const response = await fetch(`http://localhost:8000/search-by-article?article=${article}`);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data); 
+        setSearchResult(data); 
       } else {
         console.error('Failed to fetch data:', response.statusText);
       }
@@ -39,9 +39,10 @@ function App() {
             Search
           </button>
         </form>
-        {searchResult && ( // проверяем, есть ли результаты поиска
+        {}
+        {searchResult && (
           <div>
-            <h2>Search Result:</h2>
+            <h2>Search Results</h2>
             <p>Brand: {searchResult.brand}</p>
             <p>Article: {searchResult.article}</p>
             <p>Name: {searchResult.name}</p>
